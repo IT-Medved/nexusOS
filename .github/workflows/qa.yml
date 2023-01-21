@@ -47,27 +47,27 @@ jobs:
         run: echo "##[set-output name=version;]`cat packagedef | grep ".Версия(" | sed 's|[^"]*"||' | sed -r 's/".+//'`"
         id: extract_version
 
-      - name: Установка Sonar-scanner
-        uses: warchant/setup-sonar-scanner@v1
+      # - name: Установка Sonar-scanner
+      #   uses: warchant/setup-sonar-scanner@v1
 
-      # Анализ проекта в SonarQube (ветка)
-      - name: Анализ в SonarQube (branch)
-        if: github.event_name == 'push'
-        run: sonar-scanner
-            -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
-            -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }}
-            -Dsonar.branch.name=${{ steps.extract_branch.outputs.branch }}
-            -Dsonar.projectVersion=${{ steps.extract_version.outputs.version }}
+      # # Анализ проекта в SonarQube (ветка)
+      # - name: Анализ в SonarQube (branch)
+      #   if: github.event_name == 'push'
+      #   run: sonar-scanner
+      #       -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
+      #       -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }}
+      #       -Dsonar.branch.name=${{ steps.extract_branch.outputs.branch }}
+      #       -Dsonar.projectVersion=${{ steps.extract_version.outputs.version }}
 
-      # Анализ проекта в SonarQube (PR)
-      # https://docs.sonarqube.org/latest/analysis/pull-request/
-      - name: Анализ в SonarQube (pull-request)
-        if: github.event_name == 'pull_request'
-        run: sonar-scanner
-            -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
-            -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }}
-            -Dsonar.branch.name=${{ steps.extract_branch.outputs.branch }}
-            -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
-            -Dsonar.pullrequest.branch=${{ github.event.pull_request.head.ref }}
-            -Dsonar.pullrequest.base=${{ github.event.pull_request.base.ref }}
-            -Dsonar.scm.revision=${{ github.event.pull_request.head.sha }}
+      # # Анализ проекта в SonarQube (PR)
+      # # https://docs.sonarqube.org/latest/analysis/pull-request/
+      # - name: Анализ в SonarQube (pull-request)
+      #   if: github.event_name == 'pull_request'
+      #   run: sonar-scanner
+      #       -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
+      #       -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }}
+      #       -Dsonar.branch.name=${{ steps.extract_branch.outputs.branch }}
+      #       -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
+      #       -Dsonar.pullrequest.branch=${{ github.event.pull_request.head.ref }}
+      #       -Dsonar.pullrequest.base=${{ github.event.pull_request.base.ref }}
+      #       -Dsonar.scm.revision=${{ github.event.pull_request.head.sha }}
